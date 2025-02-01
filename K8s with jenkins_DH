@@ -1,0 +1,29 @@
+node{
+    stage('SCM Checkout'){
+      git credentialsId: '1f41cc36-d7a1-4f4a-bfd9-d2772abe544d', url: 'https://github.com/sree-aug-2024/java-web-app-docker.git'
+    }
+    
+    stage(" Maven Clean Package"){
+      def mavenHome =  tool name: "Maven_3.9.9", type: "maven"
+      def mavenCMD = "${mavenHome}/bin/mvn"
+      sh "${mavenCMD} clean package"
+    } 
+    
+    stage('Build Docker Image'){
+      sh "docker build -t jaya462/javaapp:1 ."
+    }
+    
+    stage('Push Docker Image'){
+    withCredentials([string(credentialsId: 'DOCKER_HUB_CRED', variable: 'Docker_hub_pass')]) {
+    sh "docker login -u jaya462 -p ${Docker_hub_pass}"
+    }
+    sh "docker push jaya462/javaapp:1"
+    }
+    
+    stage('Deploy Application In to K8s Cluster'){     
+      sh "kubectl apply -f maven-web-app.yaml"
+    }
+       
+}    
+     
+     
