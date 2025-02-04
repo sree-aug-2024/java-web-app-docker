@@ -14,7 +14,7 @@ node{
     }
     
     stage('Push Docker Image'){
-    withCredentials([string(credentialsId: 'DOCKER_HUB_CRED', variable: 'Docker_hub_pass')]) {
+    withCredentials([string(credentialsId: 'DOCKER_HUB_Cred', variable: 'Docker_hub_pass')]) {
     sh "docker login -u jaya462 -p ${Docker_hub_pass}"
     }
     sh "docker push jaya462/javaapp:1"
