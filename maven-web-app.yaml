@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: maven-web-app
-        image: jaya462/maven-web-app:1
+        image: jaya462/java-application:1
         resources:
           requests:
             cpu: 250m
