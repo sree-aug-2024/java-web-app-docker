@@ -23,6 +23,8 @@ spec:
       labels:
         app: mavenapp
     spec:
+      imagePullSecrets:
+      - name: dockerhubcred
       containers:
       - name: maven-web-app
         image: jaya462/java-application:1
