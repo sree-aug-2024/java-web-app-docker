@@ -4,7 +4,7 @@ metadata:
   name: maven-web-app-d
   namespace: jaya-ns
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -24,7 +24,7 @@ spec:
         app: mavenapp
     spec:
       imagePullSecrets:
-      - name: dockerhubcred
+      - name: regcred
       containers:
       - name: maven-web-app
         image: jaya462/java-application:1
