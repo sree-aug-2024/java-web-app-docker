@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javaapp
+  namespace: jaya-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java
+  template:
+    metadata:
+      labels:
+        app: java
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: javaapp
+        image: jaya462/java-application:1
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 500m
+            memory: 650Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javaappsvc
+  namespace: jaya-ns
+spec:
+  selector:
+    app: java
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: javaappingressrule
+  namespace: jaya-ns
+spec:
+  rules:
+  - host: "javadevops.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: javaappsvc
+            port:
+              number: 80
